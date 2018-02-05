@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/basic_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_height"
+        android:text="basic_dialog" />
+
+    <Button
+        android:id="@+id/DisplayingAnIcon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_height"
+        android:text="DisplayingAnIcon" />
+
+    <Button
+        android:id="@+id/StackedActionBtn"
+        android:layout_width="match_parent"
+        android:text="StackedActionBtn"
+        android:layout_height="@dimen/layout_height" />
+    
+    <Button
+        android:id="@+id/Callbacks"
+        android:text="Callbacks"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_height" />
+
+    <Button
+        android:id="@+id/CheckBoxPrompts"
+        android:text="CheckBox Prompts"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_height" />
+    
+    <Button
+        android:id="@+id/ListDialogs"
+        android:text="ListDialogs"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_height" />
+
+</LinearLayout>
