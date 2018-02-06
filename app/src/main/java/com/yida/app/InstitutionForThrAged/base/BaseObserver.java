@@ -13,12 +13,14 @@ import io.reactivex.disposables.Disposable;
 public class BaseObserver<T> implements io.reactivex.Observer<T> {
 
     private Context context;
+    private ObserverOnNextListener listener;
 
     public BaseObserver() {
     }
 
-    public BaseObserver(Context context) {
+    public BaseObserver(Context context, ObserverOnNextListener listener) {
         this.context = context;
+        this.listener = listener;
     }
 
     @Override
@@ -28,12 +30,12 @@ public class BaseObserver<T> implements io.reactivex.Observer<T> {
 
     @Override
     public void onNext(T value) {
-
+        listener.onNext(value);
     }
 
     @Override
     public void onError(Throwable e) {
-        ApiErrorHelper.handleCommonError(context,e);
+        ApiErrorHelper.handleCommonError(context, e);
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.yida.app.InstitutionForThrAged.test;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,14 +13,25 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.StackingBehavior;
 import com.orhanobut.logger.Logger;
 import com.yida.app.InstitutionForThrAged.R;
+import com.yida.app.InstitutionForThrAged.api.remote.ApiHelper;
+import com.yida.app.InstitutionForThrAged.base.BaseObserver;
+import com.yida.app.InstitutionForThrAged.base.ObserverOnNextListener;
+import com.yida.app.InstitutionForThrAged.base.ProgressObserver;
+import com.yida.app.InstitutionForThrAged.base.ui.BaseActivity;
+import com.yida.app.InstitutionForThrAged.model.MovieBean;
+
+import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by think on 2017/2/7.
  */
 
-public class TestLibrary extends AppCompatActivity implements View.OnClickListener {
+public class TestLibrary extends BaseActivity implements View.OnClickListener {
 
-
+    private static final String TAG = TestLibrary.class.getSimpleName();
     private Button basic_dialog;
     private Button displayaicon;
     private Button stackedActionBtn;
@@ -32,7 +43,6 @@ public class TestLibrary extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-
 
         basic_dialog = (Button) findViewById(R.id.basic_dialog);
         displayaicon = (Button) findViewById(R.id.DisplayingAnIcon);
@@ -49,7 +59,65 @@ public class TestLibrary extends AppCompatActivity implements View.OnClickListen
         checkBoxPrompts.setOnClickListener(this);
         listDialogs.setOnClickListener(this);
 
+        //原始版
+        Observer<MovieBean> observer = new Observer<MovieBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+
+            @Override
+            public void onNext(MovieBean movieBean) {
+                Log.d(TAG, "onNext: " + movieBean.getTitle());
+                List<MovieBean.Subjects> list = movieBean.getSubjects();
+                for (MovieBean.Subjects sub : list) {
+                    Log.d(TAG, "onNext: " + sub.getId() + "," + sub.getYear() + "," + sub.getTitle());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG, "onComplete: Over!");
+            }
+        };
+        ApiHelper.getTopMovie(observer, 0, 10);
+
+        //优化版
+        ObserverOnNextListener<MovieBean> beanBaseObserver = new ObserverOnNextListener<MovieBean>() {
+            @Override
+            public void onNext(MovieBean value) {
+                Logger.d(TAG, "onNext: " + value.getTitle());
+                List<MovieBean.Subjects> list = value.getSubjects();
+                for (MovieBean.Subjects sub : list) {
+                    Log.d(TAG, "onNext: " + sub.getId() + "," + sub.getYear() + "," + sub.getTitle());
+                }
+            }
+        };
+        ApiHelper.getTopMovie(new BaseObserver<MovieBean>(this, beanBaseObserver), 0, 10);
+
+        //终极版
+        ObserverOnNextListener<MovieBean> listener = new ObserverOnNextListener<MovieBean>() {
+            @Override
+            public void onNext(MovieBean movie) {
+                Log.d(TAG, "onNext: " + movie.getTitle());
+                List<MovieBean.Subjects> list = movie.getSubjects();
+                for (MovieBean.Subjects sub : list) {
+                    Log.d(TAG, "onNext: " + sub.getId() + "," + sub.getYear() + "," + sub.getTitle());
+                }
+            }
+        };
+        ApiHelper.getTopMovie(new ProgressObserver<MovieBean>(this, listener), 0, 10);
+
         UserLogger();
+    }
+
+    @Override
+    protected int getLayout() {
+        return 0;
     }
 
     private void UserLogger() {
@@ -331,5 +399,15 @@ public class TestLibrary extends AppCompatActivity implements View.OnClickListen
                         .show();*/
                 break;
         }
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+
     }
 }

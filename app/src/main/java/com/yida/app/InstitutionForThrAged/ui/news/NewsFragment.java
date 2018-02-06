@@ -118,8 +118,7 @@ public class NewsFragment extends BaseFragment implements NewsFragmentContract.V
 
     @Override
     public void setPresenter(NewsFragmentContract.Presenter presenter) {
-        
-        
+
     }
 
  /*   @Override

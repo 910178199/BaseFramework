@@ -32,7 +32,6 @@ public enum ClientFactory {
         }
         Cache cache = new Cache(new File(AppConstant.NET_DATA_PATH), 10 * 1024 * 1024);
         mBuilder.addNetworkInterceptor(ClientHelper.getAutoCacheInterceptor())
-                .addInterceptor(ClientHelper.getAutoCacheInterceptor())
                 .cache(cache)
                 //连接失败重试
                 .retryOnConnectionFailure(true)

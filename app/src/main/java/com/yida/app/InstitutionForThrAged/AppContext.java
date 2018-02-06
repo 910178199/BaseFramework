@@ -39,8 +39,6 @@ public class AppContext extends BaseApplication {
         return instance;
     }
 
-
-
     /**
      * 判断当前版本是否兼容
      */

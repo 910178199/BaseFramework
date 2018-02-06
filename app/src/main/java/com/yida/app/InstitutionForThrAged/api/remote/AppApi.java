@@ -1,8 +1,10 @@
 package com.yida.app.InstitutionForThrAged.api.remote;
 
+import com.yida.app.InstitutionForThrAged.model.MovieBean;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * @author think
@@ -13,7 +15,7 @@ import retrofit2.http.Path;
  */
 public interface AppApi {
 
-    @GET("/healthy/v1/{index}")
-    Observable<Object> get(@Path("index") String indexs);
+    @GET("top250")
+    Observable<MovieBean> getTopMovie(@Query("start") int start, @Query("count") int count);
 
 }

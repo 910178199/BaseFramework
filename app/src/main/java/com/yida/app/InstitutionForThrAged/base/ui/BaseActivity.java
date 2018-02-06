@@ -92,6 +92,8 @@ public abstract class BaseActivity extends RxAppCompatActivity
     }
 
 
+
+
     protected void init(Bundle saveInstanceState) {
 
     }
