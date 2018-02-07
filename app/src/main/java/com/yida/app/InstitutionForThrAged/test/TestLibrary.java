@@ -21,9 +21,12 @@ import com.yida.app.InstitutionForThrAged.base.ui.BaseActivity;
 import com.yida.app.InstitutionForThrAged.model.MovieBean;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by think on 2017/2/7.
@@ -113,6 +116,20 @@ public class TestLibrary extends BaseActivity implements View.OnClickListener {
         ApiHelper.getTopMovie(new ProgressObserver<MovieBean>(this, listener), 0, 10);
 
         UserLogger();
+
+        TestLibrary
+                .clicks(basic_dialog)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(new Consumer<View>() {
+                    @Override
+                    public void accept(View aVoid) throws Exception {
+                        Logger.d("hhhhhhhhhhhhhhhhhhh");
+                    }
+                });
+    }
+
+    public static Observable<View> clicks(@NonNull View view) {
+        return Observable.create(new ViewClickOnSubscribe(view));
     }
 
     @Override

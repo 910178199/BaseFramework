@@ -14,6 +14,7 @@ public class BaseObserver<T> implements io.reactivex.Observer<T> {
 
     private Context context;
     private ObserverOnNextListener listener;
+    private Disposable disposable;
 
     public BaseObserver() {
     }
@@ -25,7 +26,7 @@ public class BaseObserver<T> implements io.reactivex.Observer<T> {
 
     @Override
     public void onSubscribe(Disposable d) {
-
+        this.disposable = d;
     }
 
     @Override
@@ -40,6 +41,9 @@ public class BaseObserver<T> implements io.reactivex.Observer<T> {
 
     @Override
     public void onComplete() {
-
+        //取消订阅
+        if (!disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 }

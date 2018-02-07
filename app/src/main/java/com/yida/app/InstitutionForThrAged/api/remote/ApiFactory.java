@@ -16,7 +16,7 @@ public enum ApiFactory {
 
     //    public static final String BASE_API = "http://47.92.83.246:8060/";
     public static final String BASE_API = "https://api.douban.com/v2/movie/";
-    private static AppApi appApi;
+    private static volatile AppApi appApi;
 
     ApiFactory() {
     }
@@ -25,7 +25,10 @@ public enum ApiFactory {
     public static AppApi getAppApi() {
         if (appApi == null) {
             synchronized (ApiFactory.class) {
-                appApi = createApi(BASE_API, AppApi.class, GsonConverterFactory.create());
+                //在static 修饰synchronized (this) 没有this
+                if (appApi == null) {
+                    appApi = createApi(BASE_API, AppApi.class, GsonConverterFactory.create());
+                }
             }
         }
         return appApi;

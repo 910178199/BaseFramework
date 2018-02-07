@@ -25,15 +25,15 @@ public class ApiErrorHelper {
     private static final String TAG = ApiErrorHelper.class.getSimpleName();
 
     public static void handleCommonError(Context context, Throwable e) {
-        if (e instanceof HttpException || e instanceof IOException) {
-            AppContext.toastShort(BaseApplication.resources().getString(R.string.error_no_internet));
-            LogUtils.e(TAG, e.getMessage());
-        } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
+        if (e instanceof ConnectException || e instanceof UnknownHostException) {
             AppContext.toastShort("网络异常，请检查网络");
         } else if (e instanceof TimeoutException || e instanceof SocketTimeoutException) {
             AppContext.toastShort("网络不畅，请稍后再试！");
         } else if (e instanceof JsonSyntaxException) {
             AppContext.toastShort("数据解析异常");
+        } else if (e instanceof HttpException || e instanceof IOException) {
+            AppContext.toastShort(BaseApplication.resources().getString(R.string.error_no_internet));
+            LogUtils.e(TAG, e.getMessage());
         } else if (e instanceof ApiException) {
             handleApiError(context, e);
         } else {
